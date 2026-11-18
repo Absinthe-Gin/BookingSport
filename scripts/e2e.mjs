@@ -92,6 +92,62 @@ await run('booking-conflict', async (page) => {
   void page;
 });
 
+await run('auth', async (page) => {
+  await page.goto(`${BASE}/account`);
+  await page.getByText('Tạo tài khoản để dễ dàng quản lý').waitFor();
+  await shot(page, 'local-account-guest-dialog');
+  await page.getByRole('button', { name: 'OK' }).click();
+
+  await page.goto(`${BASE}/`);
+  await page.getByRole('button', { name: 'Yêu thích', exact: true }).click();
+  await page.getByText('Chưa có sân yêu thích').waitFor();
+
+  await page.goto(`${BASE}/uRegister`);
+  await page.getByRole('button', { name: 'ĐĂNG KÝ' }).click();
+  await page.getByText('Vui lòng nhập họ và tên').waitFor();
+  const phone = uniquePhone();
+  await page.getByPlaceholder('Nhập số điện thoại').fill(phone);
+  await page.getByPlaceholder('Nhập họ và tên').fill('Người Dùng Test');
+  await page.getByPlaceholder('Nhập mật khẩu (*)').fill('matkhau1');
+  await page.getByPlaceholder('Nhập lại mật khẩu').fill('matkhau1');
+  await shot(page, 'local-register');
+  await page.getByRole('button', { name: 'ĐĂNG KÝ' }).click();
+  await page.getByText('Xin chào, Người Dùng Test').first().waitFor();
+
+  await page.getByRole('button', { name: /^Yêu thích Pickleball cổng B Ga/ }).click();
+  await page.getByRole('button', { name: 'Yêu thích', exact: true }).click();
+  await page.waitForURL(/favorites/);
+  await page.getByText('Pickleball cổng B Ga Hà Nội').waitFor();
+
+  await page.goto(`${BASE}/userBooking/${VENUE}`);
+  await pickFreeSlots(page, 1);
+  await page.getByRole('button', { name: 'TIẾP THEO' }).click();
+  await page.waitForURL(/confirm$/);
+  assert.equal(await page.getByPlaceholder('Nhập tên của bạn').inputValue(), 'Người Dùng Test');
+  await page.getByRole('button', { name: /XÁC NHẬN/ }).click();
+  await page.waitForURL(/\/booking\//);
+
+  await page.goto(`${BASE}/account`);
+  await page.getByText('Pickleball cổng B Ga Hà Nội').first().waitFor();
+  await shot(page, 'local-account-bookings');
+  await page.getByRole('button', { name: 'Huỷ lịch' }).first().click();
+  await page.getByRole('button', { name: 'Đồng ý' }).click();
+  await page.getByText('Đã huỷ lịch đặt').waitFor();
+
+  await page.getByRole('button', { name: 'Đăng xuất' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Đăng xuất' }).click();
+  await page.goto(`${BASE}/uLogin`);
+  await page.getByPlaceholder('Nhập số điện thoại').fill(phone);
+  await page.getByPlaceholder('Nhập mật khẩu (*)').fill('sai-mat-khau');
+  await page.getByRole('button', { name: 'ĐĂNG NHẬP', exact: true }).click();
+  await page.getByText('Tài khoản hoặc mật khẩu không đúng').waitFor();
+  await page.getByPlaceholder('Nhập mật khẩu (*)').fill('matkhau1');
+  await shot(page, 'local-login');
+  await page.getByRole('button', { name: 'ĐĂNG NHẬP', exact: true }).click();
+  await page.waitForURL(`${BASE}/`);
+  await page.getByText('Xin chào, Người Dùng Test').first().waitFor();
+});
+
 console.table(results);
 await browser.close();
 process.exit(results.some((r) => r[1] !== 'PASS') ? 1 : 0);
