@@ -4,7 +4,7 @@ import { db, transaction } from '../db.ts';
 import { normalizePhone, requireAuth, type AuthedRequest } from '../lib/auth.ts';
 import { computeAvailability, getVenue } from '../lib/venues.ts';
 import { addDays, isValidDate, todayVN } from '../lib/time.ts';
-import { SLOT_MINUTES, groupSlots, slotPrice } from '../../shared/schedule.ts';
+import { SLOT_MINUTES, groupSlots, slotPrice, slotToTime } from '../../shared/schedule.ts';
 import type { Booking, BookingLine } from '../../shared/types.ts';
 
 export const bookingsRouter = Router();
@@ -55,7 +55,7 @@ function buildQuote(body: unknown): { error: string } | { venue: NonNullable<Ret
   const lines = groupSlots(clean).map((g) => {
     let price = 0;
     for (let k = g.startSlot; k < g.endSlot; k++) price += slotPrice(venue.priceTable, venue.openHour, k);
-    return { ...g, courtName: venue.courts[g.court], price };
+    return { ...g, courtName: venue.courts[g.court], startTime: slotToTime(venue.openHour, g.startSlot), endTime: slotToTime(venue.openHour, g.endSlot), price };
   });
   const totalPrice = lines.reduce((s, l) => s + l.price, 0);
   return { venue, date, slots: clean, lines, totalMinutes: clean.length * SLOT_MINUTES, totalPrice };

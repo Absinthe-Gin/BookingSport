@@ -27,5 +27,9 @@ export const router = createBrowserRouter([
       { path: '/san/:slug', element: <HomePage /> },
     ],
   },
+  { path: '/userBooking/:slug', element: page(() => import('@/pages/BookingPage')) },
+  { path: '/userBooking/:slug/prices', element: page(() => import('@/pages/PricePage')) },
+  { path: '/userBooking/:slug/confirm', element: page(() => import('@/pages/BookingConfirmPage')) },
+  { path: '/booking/:code', element: page(() => import('@/pages/BookingResultPage')) },
   { path: '*', element: page(async () => ({ default: NotFound })) },
 ]);

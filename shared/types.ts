@@ -66,6 +66,8 @@ export interface BookingLine {
   courtName: string;
   startSlot: number;
   endSlot: number;
+  startTime: string;
+  endTime: string;
   price: number;
 }
 
