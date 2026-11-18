@@ -5,7 +5,9 @@ import path from 'node:path';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  optimizeDeps: { include: ['react', 'react-dom', 'react-router-dom', 'leaflet', 'react-leaflet'] },
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: {
       '@': path.resolve(import.meta.dirname, 'src'),
       '@shared': path.resolve(import.meta.dirname, 'shared'),

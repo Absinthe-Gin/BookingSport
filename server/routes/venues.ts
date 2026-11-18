@@ -6,7 +6,7 @@ import { DEFAULT_LOCATION, distanceKm } from '../../shared/schedule.ts';
 export const venuesRouter = Router();
 
 function strip(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
+  return s.normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
 }
 
 venuesRouter.get('/', (req, res) => {
