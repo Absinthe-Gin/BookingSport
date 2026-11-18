@@ -1,33 +1,35 @@
-# SportGo – Sports court booking
+# BookingSport (ALO Booking clone)
 
-A demo web app for booking sports courts (badminton, pickleball, football, tennis, basketball, volleyball, table tennis). Built with React 19, Vite and React Router. It has no backend: data lives in `src/data.js`, and bookings are stored in the browser's `localStorage`.
+A clone of [datlich.alobo.vn](https://datlich.alobo.vn/), the ALO Booking sports-court booking site, built with React and an Express API.
+The repository owner has permission from Alobo to reuse its branding, images and data.
 
-## Run
+## Requirements
+
+- Node.js 24 or newer. The API runs TypeScript directly and uses the built-in `node:sqlite`.
+
+## Getting started
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # production output in dist/
+npm run dev          # API on http://localhost:4000, web on http://localhost:5180
 ```
 
-## Features
+The SQLite database (`server/data/booking.db`) is created and seeded on first start.
+To reset it, run `npm run seed -- --force`.
 
-- Venue search by name or address, filters by sport and district, sorting by rating or price, favorites.
-- Venue page: 14-day date strip and a court × 30-minute timetable showing free, booked, past and your own slots. Peak hours (17:00–21:00) and weekend pricing apply.
-- Booking requires at least 1 hour per court. Pay at the venue or transfer a 30% deposit. Each booking gets a code.
-- "Lịch của tôi": upcoming bookings and history, with cancellation.
-- Mock login (name + phone number).
-- Responsive layout with a sticky booking bar on mobile.
+## Scripts
 
-## Structure
+| Script | What it does |
+|---|---|
+| `npm run dev` | Starts the API (watch mode) and the Vite dev server |
+| `npm run build` | Type-checks everything and builds the frontend into `dist/` |
+| `npm run start:api` | Starts the API in production mode and serves `dist/` if it exists. Set `JWT_SECRET` first |
+| `npm run seed` | Seeds an empty database. Add `-- --force` to wipe it and seed again |
+| `npm run test:e2e` | Runs the Playwright end-to-end checks. Needs `npm run dev` running |
 
-```
-src/
-  data.js            sports, districts, venues, courts, prices
-  utils.js           slots, pricing, date helpers, demo occupancy
-  store.jsx          user / bookings / favorites state + localStorage
-  pages/             Home, Venue, MyBookings
-  components/        VenueCard, Modal, LoginModal, CheckoutModal
-```
+## Documentation
 
-Slots that other customers have booked are generated deterministically from a hash, so they are demo data. To go to production, replace `isBookedByOthers` and `addBooking` with real API calls.
+- [docs/website-inventory.md](docs/website-inventory.md): what the source site has and how it was surveyed
+- [docs/architecture.md](docs/architecture.md): code structure, data flow, design decisions
+- [docs/implementation-plan.md](docs/implementation-plan.md): milestones
+- [docs/progress.md](docs/progress.md): progress log
