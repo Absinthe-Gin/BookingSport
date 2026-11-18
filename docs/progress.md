@@ -17,8 +17,8 @@ Last updated: 2026-11-18. Branch: `main`, remote `origin` (github.com/Absinthe-G
 | 2 | Booking flow: grid, prices, confirm, payment | `19453cb`, `8a762b9` | pushed | e2e `booking`, `booking-conflict` |
 | 3 | Auth + account + favourites | `8eca07c`, `ba97462` | pushed | e2e `auth` |
 | 4 | Search with filters, map | `130c8d2`, `264c6cc` | pushed | e2e `search`, `map` |
-| 5 | Social, Explore feed, Featured | `9d49c2a` and the test commit before it | pushed | e2e `social`, `explore` |
-| 6 | Responsive QA, docs | see `git log` | pushed | `responsive.mjs`: no overflow and no runtime errors on 14 routes × 3 sizes; all 7 e2e suites pass; production build serves `dist/` and deep links |
+| 5 | Social, Explore feed, Featured | `41d115f`, `9d49c2a` | pushed | e2e `social`, `explore` |
+| 6 | Responsive QA, docs | `bcfa8e7` | pushed | `responsive.mjs`: no overflow and no runtime errors on 14 routes × 3 sizes; all 7 e2e suites pass; production build serves `dist/` and deep links |
 
 ## Visual comparison (source vs clone)
 
