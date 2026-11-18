@@ -1,6 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Icon } from '@/components/common/Icon';
 import { useLocation } from '@/app/providers/LocationProvider';
+import { useFavorites } from '@/app/providers/FavoritesProvider';
+import { useToast } from '@/app/providers/ToastProvider';
+
+function useOpenFavorites() {
+  const { slugs } = useFavorites();
+  const toast = useToast();
+  const navigate = useNavigate();
+  return () => (slugs.length ? navigate('/favorites') : toast.show('Chưa có sân yêu thích'));
+}
 
 function SearchTrigger({ className = '' }: { className?: string }) {
   const navigate = useNavigate();
@@ -29,6 +38,7 @@ function SocialPill({ compact = false }: { compact?: boolean }) {
 export function HomeToolbar() {
   const navigate = useNavigate();
   const { locate, locating } = useLocation();
+  const openFavorites = useOpenFavorites();
 
   return (
     <>
@@ -45,7 +55,7 @@ export function HomeToolbar() {
         <div className="ml-auto flex items-center gap-12 text-[15px] text-primary-deep">
           <Link to="/map" className="flex items-center gap-2"><Icon name="map-fold" size={22} className="text-primary" />Bản đồ</Link>
           <Link to="/account" className="flex items-center gap-2"><Icon name="calendar-check" size={22} className="text-primary" />Sân đã đặt</Link>
-          <Link to="/favorites" className="flex items-center gap-2"><Icon name="heart-fill" size={22} className="text-primary" />Yêu thích</Link>
+          <button type="button" onClick={openFavorites} className="flex items-center gap-2"><Icon name="heart-fill" size={22} className="text-primary" />Yêu thích</button>
         </div>
       </div>
 
@@ -58,9 +68,9 @@ export function HomeToolbar() {
           <button type="button" onClick={locate} aria-label="Dùng vị trí của tôi" className="flex h-[42px] w-[42px] items-center justify-center rounded-lg bg-white text-primary shadow-bar">
             <Icon name="locate" size={22} />
           </button>
-          <Link to="/favorites" aria-label="Yêu thích" className="flex h-[42px] w-[42px] items-center justify-center rounded-lg bg-white text-primary shadow-bar">
+          <button type="button" onClick={openFavorites} aria-label="Yêu thích" className="flex h-[42px] w-[42px] items-center justify-center rounded-lg bg-white text-primary shadow-bar">
             <Icon name="heart" size={22} strokeWidth={2} />
-          </Link>
+          </button>
         </div>
         <div className="mt-3 flex gap-2">
           <SocialPill compact />

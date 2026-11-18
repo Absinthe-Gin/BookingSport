@@ -25,8 +25,12 @@ export const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       { path: '/san/:slug', element: <HomePage /> },
+      { path: '/account', element: page(() => import('@/pages/AccountPage')) },
+      { path: '/favorites', element: page(() => import('@/pages/FavoritesPage')) },
     ],
   },
+  { path: '/uLogin', element: page(() => import('@/pages/LoginPage')) },
+  { path: '/uRegister', element: page(() => import('@/pages/RegisterPage')) },
   { path: '/userBooking/:slug', element: page(() => import('@/pages/BookingPage')) },
   { path: '/userBooking/:slug/prices', element: page(() => import('@/pages/PricePage')) },
   { path: '/userBooking/:slug/confirm', element: page(() => import('@/pages/BookingConfirmPage')) },
