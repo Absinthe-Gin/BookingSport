@@ -180,6 +180,41 @@ await run('map', async (page) => {
   await page.getByText('1 sân quanh đây').waitFor();
 });
 
+await run('social', async (page) => {
+  await page.goto(`${BASE}/socialNearby`);
+  await page.getByText(/\d+ sân · \d+ buổi chơi/).waitFor();
+  await shot(page, 'local-social-nearby');
+  const before = await page.getByText(/\d+ sân · \d+ buổi chơi/).textContent();
+  await page.getByRole('button', { name: 'Tối', exact: true }).click();
+  await page.waitForFunction((b) => !document.body.innerText.includes(b), before);
+  await page.getByRole('button', { name: 'Đặt lại' }).click();
+  const join = page.getByRole('button', { name: 'Đặt chỗ' }).first();
+  await join.click();
+  await page.getByPlaceholder('Nhập tên của bạn').fill('Người Chơi');
+  await page.getByPlaceholder('Nhập số điện thoại').fill(uniquePhone());
+  await page.getByRole('button', { name: 'Tăng số vé' }).click();
+  await page.getByRole('button', { name: 'XÁC NHẬN ĐẶT CHỖ' }).click();
+  await page.getByText('Đã đặt 2 vé thành công').waitFor();
+  await page.getByRole('button', { name: 'Theo khung giờ' }).click();
+  await page.getByPlaceholder('Tìm sân / sự kiện').fill('dici');
+  await page.getByText(/^1 sân · \d+ buổi chơi/).waitFor();
+});
+
+await run('explore', async (page) => {
+  await page.goto(`${BASE}/explore`);
+  await page.getByRole('tab', { name: 'Social' }).waitFor();
+  await page.getByText(/\d+ sân · \d+ buổi chơi/).waitFor();
+  await shot(page, 'local-explore-social');
+  for (const [tab, text] of [['Sự kiện', 'TM PICKLEBALL TƯƠNG MAI'], ['Gói hội viên', 'COMBO SÁNG 8H-11H'], ['Khóa học', 'Coach Mạnh'], ['Thông báo', 'Sân trống trong hôm nay'], ['Ưu đãi', 'Chưa có chủ sân nào gần bạn đăng bài.']]) {
+    await page.getByRole('tab', { name: tab }).click();
+    await page.getByText(text).first().waitFor();
+    await shot(page, `local-explore-${tab.replace(/\s+/g, '-')}`);
+  }
+  await page.goto(`${BASE}/featured`);
+  await page.getByRole('img', { name: 'SWIN Pickleball Quận 7' }).waitFor();
+  await shot(page, 'local-featured');
+});
+
 console.table(results);
 await browser.close();
 process.exit(results.some((r) => r[1] !== 'PASS') ? 1 : 0);
