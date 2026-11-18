@@ -148,6 +148,38 @@ await run('auth', async (page) => {
   await page.getByText('Xin chào, Người Dùng Test').first().waitFor();
 });
 
+await run('search', async (page) => {
+  await page.goto(`${BASE}/`);
+  await page.getByRole('button', { name: 'Bộ lọc' }).click();
+  await page.waitForURL(/search\?filters=1/);
+  await page.getByRole('dialog', { name: 'Bộ lọc tìm kiếm' }).waitFor();
+  await shot(page, 'local-search-filters');
+  await page.getByRole('button', { name: 'Cầu lông', exact: true }).click();
+  await page.getByRole('button', { name: 'Tìm kiếm', exact: true }).click();
+  await page.getByText('Tìm thấy 1 sân').waitFor();
+  await page.getByText('Sân Cầu Lông Phúc Long - 460 Trần Quý Cáp').waitFor();
+  await page.getByRole('button', { name: 'Mở bộ lọc' }).click();
+  await page.getByRole('button', { name: 'Đặt lại bộ lọc' }).click();
+  await page.getByRole('button', { name: 'Tìm kiếm', exact: true }).click();
+  await page.getByPlaceholder('Nhập tên sân, địa chỉ').fill('khâm thiên');
+  await page.getByText('Tìm thấy 2 sân').waitFor();
+  await page.getByPlaceholder('Nhập tên sân, địa chỉ').fill('không có sân nào như vậy');
+  await page.getByText('Không tìm thấy sân phù hợp').waitFor();
+  await shot(page, 'local-search-empty');
+});
+
+await run('map', async (page) => {
+  await page.goto(`${BASE}/map`);
+  await page.locator('.leaflet-marker-icon[title="RAILWAY Khâm Thiên"]').waitFor();
+  await shot(page, 'local-map');
+  await page.locator('.leaflet-marker-icon[title="RAILWAY Khâm Thiên"]').click();
+  await page.getByRole('button', { name: 'ĐẶT LỊCH' }).waitFor();
+  await page.getByRole('button', { name: 'Cầu lông', exact: true }).click();
+  await page.locator('.leaflet-marker-icon[title="RAILWAY Khâm Thiên"]').waitFor({ state: 'detached' });
+  await page.getByRole('button', { name: 'Danh sách sân' }).click();
+  await page.getByText('1 sân quanh đây').waitFor();
+});
+
 console.table(results);
 await browser.close();
 process.exit(results.some((r) => r[1] !== 'PASS') ? 1 : 0);
