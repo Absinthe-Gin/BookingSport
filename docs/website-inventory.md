@@ -23,6 +23,7 @@ The owner of this repository says they have permission from Alobo to copy the br
 | `/` (first visit) | Onboarding, 4 slides ("Bỏ Qua", "Tiếp tục") | Intro | Full screen | Done |
 | `/` | Trang chủ: list of venues near you | List | App shell + bottom nav | Done |
 | `/` + side panel | Venue detail (left panel, 592px wide, 6 tabs) | Detail | Panel over the list | Done (`/san/:slug`) |
+| (after confirm) | Payment / booking result | Function | Full screen | Done (`/booking/:code`), simulated payment |
 | `/san/:slug` | Online booking link for a venue | Detail | Same as above | Done |
 | `/userBooking` | "Đặt lịch theo sân - trực quan": courts × time grid | Function | Full screen, own header | Done (`/userBooking/:slug`) |
 | `/userBooking` (sub-page) | "Xem sân và bảng giá": price table | Detail | Full screen | Done |

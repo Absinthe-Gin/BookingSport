@@ -124,11 +124,11 @@ export function VenueDetailPanel({ slug, onClose, onBook }: { slug: string; onCl
 
             <div className="relative -mt-[92px] px-2.5">
               <div className="relative z-10 mb-[-24px] flex justify-center gap-2.5">
-                <button type="button" onClick={() => setTab('Đánh giá')} className="flex h-12 items-center gap-2 rounded-full bg-teal px-5 text-[17px] text-white shadow-card">
+                <button type="button" onClick={() => setTab('Đánh giá')} className="flex h-12 items-center gap-2 rounded-full bg-teal px-4 text-[15px] whitespace-nowrap text-white shadow-card sm:px-5 sm:text-[17px]">
                   <Icon name="star" size={24} />{venue.rating ? `${venue.rating} / 5` : 'Chưa có đánh giá'}
                 </button>
                 <button type="button" onClick={() => (user ? toast.show('Tính năng chat sẽ sớm ra mắt') : navigate('/uLogin'))}
-                  className="flex h-12 items-center gap-2 rounded-full bg-primary px-5 text-[17px] font-semibold text-white shadow-card">
+                  className="flex h-12 items-center gap-2 rounded-full bg-primary px-4 text-[15px] font-semibold whitespace-nowrap text-white shadow-card sm:px-5 sm:text-[17px]">
                   <Icon name="chat" size={22} />Chat với sân
                 </button>
               </div>
